@@ -21,14 +21,14 @@
                     $messageError = Session::get('error');
                 @endphp
                 @if (Session::get('success'))
-                <div class="alert alert-success mb-2">
-                    {{ $messageSuccess }}
-                </div>
+                    <div class="alert alert-success mb-2">
+                        {{ $messageSuccess }}
+                    </div>
                 @endif
                 @if (Session::get('error'))
-                <div class="alert alert-danger mb-2">
-                    {{ $messageError }}
-                </div>
+                    <div class="alert alert-danger mb-2">
+                        {{ $messageError }}
+                    </div>
                 @endif
             </div>
         </div>
@@ -38,7 +38,8 @@
                     <div class="item">
                         <div class="in">
                             <div>
-                                <b>{{ date('d-m-Y', strtotime($d->tgl_izin)) }} ({{ $d->status == 'i' ? 'Izin' : 'Sakit' }})</b><br>
+                                <b>{{ date('d-m-Y', strtotime($d->tgl_izin)) }}
+                                    ({{ $d->status == 'i' ? 'Izin' : 'Sakit' }})</b><br>
                                 <small class="text-muted">{{ $d->keterangan }}</small>
                             </div>
                             @if ($d->status_approved == '0')
@@ -46,7 +47,7 @@
                             @elseif ($d->status_approved == '1')
                                 <span class="badge badge-success">Approved</span>
                             @elseif ($d->status_approved == '2')
-                                <span class="badge badge-danger">Declined</span>
+                                <span class="badge badge-danger">Rejected</span>
                             @endif
                         </div>
                     </div>

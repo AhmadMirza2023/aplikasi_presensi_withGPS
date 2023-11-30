@@ -46,7 +46,7 @@
                         {{ $messagewarning }}
                     </div>
                 @endif
-                <form action="/proseslogin" method="POST">
+                <form action="/prosesLogin" method="POST">
                     @csrf
                     <div class="form-group boxed">
                         <div class="input-wrapper">
@@ -59,7 +59,8 @@
 
                     <div class="form-group boxed">
                         <div class="input-wrapper">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                            <input type="password" class="form-control" id="password" name="password"
+                                placeholder="Password">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
@@ -70,7 +71,8 @@
                         {{-- <div>
                             <a href="page-register.html">Register Now</a>
                         </div> --}}
-                        <div class="col-md-4"><a href="page-forgot-password.html" class="text-muted">Forgot Password?</a></div>
+                        <div class="col-md-4"><a href="page-forgot-password.html" class="text-muted">Forgot
+                                Password?</a></div>
                     </div>
 
                     <div class="form-button-group">

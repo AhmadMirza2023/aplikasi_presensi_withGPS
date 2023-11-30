@@ -14,14 +14,18 @@
 
     {{-- css dan js untuk section content, start --}}
     <style>
-        .webcam-capture, .webcam-capture video{
+        .webcam-capture,
+        .webcam-capture video {
             display: inline-block;
             margin: auto;
             width: 100% !important;
             height: auto !important;
             border-radius: 15px;
         }
-        #map { height: 180px; }
+
+        #map {
+            height: 180px;
+        }
     </style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -37,19 +41,19 @@
     </div>
     <div class="row">
         @if ($cek > 0)
-        <div class="col">
-            <button id="takeabsen" class="btn btn-danger btn-block">
-                <ion-icon name="camera-outline"></ion-icon>
-                Absen Pulang
-            </button>
-        </div>
+            <div class="col">
+                <button id="takeabsen" class="btn btn-danger btn-block">
+                    <ion-icon name="camera-outline"></ion-icon>
+                    Absen Pulang
+                </button>
+            </div>
         @else
-        <div class="col">
-            <button id="takeabsen" class="btn btn-primary btn-block">
-                <ion-icon name="camera-outline"></ion-icon>
-                Absen Masuk
-            </button>
-        </div>
+            <div class="col">
+                <button id="takeabsen" class="btn btn-primary btn-block">
+                    <ion-icon name="camera-outline"></ion-icon>
+                    Absen Masuk
+                </button>
+            </div>
         @endif
     </div>
     <div class="row mt-2">
@@ -60,7 +64,7 @@
 @endsection
 
 @push('myscript')
-{{-- script start --}}
+    {{-- script start --}}
     <script>
         // script untuk mengatur Webcam, start
         var notifikasi_in = document.getElementById('notifikasi_in');
@@ -80,30 +84,34 @@
             navigator.geolocation.getCurrentPosition(successCallBack, errorCallBack)
         }
 
-        function successCallBack (position) {
+        function successCallBack(position) {
             lokasi.value = position.coords.latitude + ',' + position.coords.longitude;
-            var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 13);
+            var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
+            var lokasi_kantor = "{{ $lok_kantor->lokasi_kantor }}";
+            var lok = lokasi_kantor.split(',');
+            var lat_kantor = lok[0];
+            var long_kantor = lok[1];
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
+                maxZoom: 20,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
             var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-            var circle = L.circle([-7.2891713, 112.7989571], {
+            var circle = L.circle([lat_kantor, long_kantor], {
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
-                radius: 20
+                radius: {{ $lok_kantor->radius }}
             }).addTo(map);
         }
         // script untuk mengatur maps, end
 
-        function errorCallBack (){
+        function errorCallBack() {
 
         }
 
         // script untuk mengatur absen ketika di klik, start
-        $('#takeabsen').click(function(e){
-            Webcam.snap(function(uri){
+        $('#takeabsen').click(function(e) {
+            Webcam.snap(function(uri) {
                 image = uri;
             });
             var lokasi = $('#lokasi').val();
@@ -115,8 +123,8 @@
                     image: image,
                     lokasi: lokasi
                 },
-                chace: false,
-                success: function(respond){
+                cache: false,
+                success: function(respond) {
                     var status = respond.split('|');
                     if (status[0] == "success") {
                         Swal.fire({
@@ -124,7 +132,7 @@
                             text: status[1],
                             icon: 'success',
                         }).then((result) => {
-                            window.location.href = '/dashboard';
+                            window.location.href = '/panel2/dashboard';
                         })
                     } else {
                         Swal.fire({
@@ -137,7 +145,6 @@
             });
         });
         // script untuk mengatur absen ketika di klik, end
-
     </script>
-{{-- script end --}}
+    {{-- script end --}}
 @endpush
